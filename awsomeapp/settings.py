@@ -25,7 +25,7 @@ SECRET_KEY = '=@!rshrr^4+_#=@mx@vet9-d%d0paznd*izjse3og4k_+%9i-6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['damp-plateau-37623.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -126,7 +126,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
-STATIC_ROOT=os.path.join(BASE_DIR,'awsomeapp/static')
-
+STATICFILES_DIRS=(
+    os.path.join(BASE_DIR,'awsomeapp/static/'),
+)
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
