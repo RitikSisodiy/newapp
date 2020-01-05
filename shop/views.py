@@ -82,7 +82,7 @@ def checkout(request):
             'INDUSTRY_TYPE_ID':'Retail',
             'WEBSITE':'WEBSTAGING',
             'CHANNEL_ID':'WEB',
-            'CALLBACK_URL':'http://127.0.0.1:8000/shop/hendlerequest/',}
+            'CALLBACK_URL':'https://damp-plateau-37623.herokuapp.com/shop/hendlerequest/',}
 		param_dict['CHECKSUMHASH']=Checksum.generate_checksum(param_dict,MERCHANT_KEY)   	
 		return render(request,'shop/paytm.html', {'param_dict':param_dict })
 
