@@ -90,14 +90,9 @@
 	
 	 $('#jsonitem').val(JSON.stringify(cart))
 	 $('#ammount').val(JSON.stringify(sum))
-	{% if thank %}
-	alert('Thanks for ordering with us. Your order is is {{orderid}}. Use it to track your order using our order tracker');
-	localStorage.clear();
-	cart={};
-	sum=0;
+	
 
-	 document.location="/shop"
-	 {% endif %}
+	
 
 		</script>
 	{% endblock %}
