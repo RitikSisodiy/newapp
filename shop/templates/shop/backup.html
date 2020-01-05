@@ -1,0 +1,73 @@
+<script>
+if(localStorage.getItem('cart')==null){
+var cart={};
+}
+else{
+cart = JSON.parse(localStorage.getItem('cart'));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+}
+$('.divpr').on("click","button.cart",function(){
+var idstr=this.id.toString();
+
+if(cart[idstr]==null){
+cart[idstr]=1
+}
+else{
+cart[idstr]=cart[idstr]+1;
+}
+localStorage.setItem('cart', JSON.stringify(cart));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+updatecart(idstr);
+})
+
+
+$('.divpr').on("click","button.minus",function(){
+var mid = this.id.slice(5,);
+cart[mid]=cart[mid]-1
+cart[mid]=Math.max(0,cart[mid])
+document.getElementById('cart'+mid).innerHTML = cart[mid];
+updatepopover(cart)
+localStorage.setItem('cart', JSON.stringify(cart));
+})
+$('.divpr').on("click","button.plus",function(){
+var mid = this.id.slice(4,);
+document.getElementById('cart'+mid).innerHTML = cart[mid]=cart[mid]+1;
+updatepopover(cart)
+localStorage.setItem('cart', JSON.stringify(cart));
+})
+function updatecart(idstr){
+document.getElementById('div'+idstr).innerHTML="<button id='minus"+idstr+"' class='btn btn-primary minus' >-</button>  <label><span id='cart"+idstr+"'>"+cart[idstr]+"</span></label><button id='plus"+idstr+"' class='btn btn-primary plus'>+</button>"
+updatepopover(cart)
+}
+function updatepopover(cart){
+var popstr="";
+popstr=popstr+"<h5>Cart for your item is my shopping cart</h5><div class='container'>"
+var i=1;
+for (item in cart){
+
+popstr = popstr + "<div class='row'><b>" +i+ ":-</b>"
+console.log(popstr)
+popstr = popstr + "<div class='col-md-7'>" +document.getElementById('prod'+item).innerHTML + "</div><div class='col-lg-4'>Qty:-" + cart[item] +"</div></div><br>";
+i=i+1;
+}
+popstr = popstr + "</div><div class='row'><div class='row mx-2 ml-5'><a  href='/shop/checkout'>  <button class='btn-primary mu=2'> CHECKOUT  </button> </a>  </div><div><button class='btn-primary mx=2' onclick='clearcart()'>CLEAR CART</button></div></div>"
+  
+
+document.getElementById("popcart").setAttribute('data-content', popstr);
+$('#popcart').popover('show');
+}
+$('#popcart').popover();
+function clearcart()
+{
+  for (var a in cart){
+    console.log(a)
+document.getElementById('div'+a).innerHTML="<button style='padding: 6px 4px;' id='"+a+"' class='btn btn-primary mx-2 cart'>Add To Cart</button>"
+}
+
+localStorage.clear();
+cart={};
+updatepopover(cart)
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+
+}
+</script>

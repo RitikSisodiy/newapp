@@ -1,0 +1,20 @@
+{% extends 'shop/basic.html' %}
+{% block body %}
+<div class="container">
+	<div class="row">
+	<div class="col-md-4">
+		<img src="/media/{{product.0.image}}">
+	</div>
+	<div class="col-md-8">
+		<h3>{{product.0.product_name}}</h3>
+		<p>{{product.0.desc}}</p>
+		<p>RS:{{product.0.price}}/-</p>
+	</div>
+	</div>
+	<div class="row my-4">
+	<div class=" mx-2 "><input type="button" class="btn btn-primary" name="" value="Buy Now"></div>
+	<div class=" mx-2 "><input type="button" class="btn btn-primary" name="" value="Add To Cart"></div>
+	</div>
+
+</div>
+{% endblock %}
