@@ -177,6 +177,7 @@ def hendlerequest(request):
 	if verify:
 		if response_dict['RESPCODE'] == '01':
 			print('order successful')
+			thank=True
 		else:
 			try:
 				Order=order.objects.get(order_id=int(response_dict['ORDERID']))
@@ -184,8 +185,9 @@ def hendlerequest(request):
 				Order.delete()
 				update.delete()
 				print('order unsuccessfull because',response_dict['RESPMSG'])
+				thank=False
 			except Exception as e:
 				pass	
 	else:
 		print("order unsuccessful because",response_dict['RESPMSG'])
-	return render(request,'shop/paymentstatus.html',{'response': response_dict})
+	return render(request,'shop/paymentstatus.html',{'response': response_dict,'thank':thank})
