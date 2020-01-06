@@ -10,7 +10,7 @@ from math import ceil
 import ast,json
 from django.views.decorators.csrf import csrf_exempt
 from paytm import Checksum 
-MERCHANT_KEY = 'aaT1Xj@F_oEnHA2m'
+MERCHANT_KEY = 'a1Q7vq@5Q#PvFVc@'
 
 def index(request):
 	
@@ -75,7 +75,7 @@ def checkout(request):
 		#id=Order.order_id
 		#return render(request, 'shop/checkout.html',{'thank':thank,'orderid':id})
 		param_dict = {
-            'MID':'bEtzWe72963291709602',
+            'MID':'TaFiEU45447912471030',
             'ORDER_ID': str(Order.order_id),
             'TXN_AMOUNT':str(ammount1),
             'CUST_ID': email,
