@@ -10,9 +10,9 @@ from math import ceil
 import ast,json
 from django.views.decorators.csrf import csrf_exempt
 from paytm import Checksum 
-MERCHANT_KEY = 'a1Q7vq@5Q#PvFVc@'
+MERCHANT_KEY = 'aaT1Xj@F_oEnHA2m'
 
-def index(request):
+def index(request): 
 	
 	allprod=[]
 	catprod=Product.objects.values('category')
@@ -27,18 +27,35 @@ def index(request):
 	#params={'no_of_slides':nslide, 'range':range(0,nslide), 'product':products}
 	params={'allprod':allprod}
 	return render(request, 'shop/index.html', params)
-
+def searchfun(query,item):
+	if query in item.product_name or query in item.category or query in item.subcategory or query in item.category or query in item.desc:
+		return True
+	else:
+		return False
+def search(request):
+	query=request.GET.get('search')
+	allprod=[]
+	catprod=Product.objects.values('category')
+	cats={item['category'] for item in catprod}
+	for cat in cats:
+		print(cat)
+		prod=Product.objects.filter(category=cat)
+		prodtemp=[item for item in prod if searchfun(query,item)] 
+		n=len(prodtemp)
+		if n>0:
+			nslide=n//4 + ceil((n/4)-(n//4))
+			print(nslide)
+			allprod.append([prodtemp,range(0,nslide),nslide])
+	
+	#params={'no_of_slides':nslide, 'range':range(0,nslide), 'product':products}
+	params={'allprod':allprod}
+	return render(request, 'shop/index.html', params)
 def about(request):
     return render(request, 'shop/about.html', {})
 
 def contact(request):
     return render(request, 'shop/contact.html', {})
 
-def tracker(request):
-    return HttpResponse("We are at tracker")
-
-def search(request):
-    return HttpResponse("We are at search")
 
 def productView(request,myid):
 	prod=Product.objects.filter(id=myid)
@@ -72,20 +89,20 @@ def checkout(request):
 		update = OrderUpdate(order_id=Order.order_id, update_desc="The order has been placed")
 		update.save()
 		thank=True
+	
 		#id=Order.order_id
 		#return render(request, 'shop/checkout.html',{'thank':thank,'orderid':id})
 		param_dict = {
-            'MID':'TaFiEU45447912471030',
+            'MID':'bEtzWe72963291709602',
             'ORDER_ID': str(Order.order_id),
             'TXN_AMOUNT':str(ammount1),
             'CUST_ID': email,
             'INDUSTRY_TYPE_ID':'Retail',
             'WEBSITE':'WEBSTAGING',
             'CHANNEL_ID':'WEB',
-            'CALLBACK_URL':'https://damp-plateau-37623.herokuapp.com/shop/hendlerequest/',}
+            'CALLBACK_URL':'http://127.0.0.1:8000/shop/hendlerequest/',}
 		param_dict['CHECKSUMHASH']=Checksum.generate_checksum(param_dict,MERCHANT_KEY)   	
 		return render(request,'shop/paytm.html', {'param_dict':param_dict })
-
 
 #	jsonitem=request.GET.get('jsonitem')
 #	prod=json.loads(jsonitem)
@@ -102,20 +119,32 @@ def checkout(request):
 
 def signup(request):
 	if request.method=='POST':
+		print("working-----------")
 		username=request.POST['name']
-		email=request.POST['email']
-		phone=request.POST['phone']
-		pass1=request.POST['password']
-		fname=request.POST['fname']
-		lname=request.POST['lname']
-
-		myuser = User.objects.create_user(username,email,pass1)
-		myuser.phone= phone
-		myuser.first_name= fname
-		myuser.last_name= lname
-		myuser.save()
-		messages.success(request,"your shoppercart account is successfully created")
-		return redirect('ShopHome')
+		if len(User.objects.filter(username=username))==0:
+			email=request.POST['email']
+			if len(User.objects.filter(email=email))==0:
+				print("if working")
+				phone=request.POST['phone']
+				if len(User.objects.filter(username=phone))==0:
+					pass1=request.POST['pasword1']
+					fname=request.POST['fname']
+					lname=request.POST['lname']
+					return HttpResponse("{}")
+				else:
+					temp={'text':'phone number exist'}
+					responce=json.dumps(temp)
+					return HttpResponse(responce)
+			else:
+				print("else working")
+				temp={'text':1,'thank':True}
+				responce=json.dumps(temp)
+				return HttpResponse(responce)
+		else:
+			print("else working")
+			temp={'text':2,'thank':True}
+			responce=json.dumps(temp)
+			return HttpResponse(responce)
 	else:
 		return HttpResponse("not found")
 
@@ -160,12 +189,13 @@ def tracker(request):
         		return HttpResponse("{}")
         except Exception as e:
         	return HttpResponse("{}")
-    return render(request,'shop/tracker.html')
+    return render(request,'shop/tracker.html',{'tracker':'active'})
 
 @csrf_exempt
 def hendlerequest(request):
  #paytm will send payment reques
  #paytm will send payment reques
+		
 	form = request.POST
 	response_dict= {}
 	for i in form.keys():
@@ -187,7 +217,8 @@ def hendlerequest(request):
 				print('order unsuccessfull because',response_dict['RESPMSG'])
 				thank=False
 			except Exception as e:
-				pass	
+				pass
 	else:
+		thank=False
 		print("order unsuccessful because",response_dict['RESPMSG'])
 	return render(request,'shop/paymentstatus.html',{'response': response_dict,'thank':thank})

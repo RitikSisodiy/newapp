@@ -25,7 +25,7 @@ SECRET_KEY = '=@!rshrr^4+_#=@mx@vet9-d%d0paznd*izjse3og4k_+%9i-6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['damp-plateau-37623.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,10 +80,26 @@ WSGI_APPLICATION = 'awsomeapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'USER' : 'jxhRPqGp9f',
+        'PASSWORD' : '7HSDIYhmNU',
+        'NAME' : 'jxhRPqGp9f',
+        'HOST' : 'remotemysql.com',
+        'port' : '3306',
+         'OPTIONS' : {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset' : 'utf8mb4',
+
+
+        },
+        'jxhRPqGp9f': {
+            'CHARSET' : 'utf8mb4',
+            'COLLATION' : 'utf8mb4_unicode_ci',
+        },
+        
     }
 }
 

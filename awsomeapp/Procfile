@@ -1,0 +1,1 @@
+web: gunicorn awsomeapp.wsgi --log-file -

@@ -40,16 +40,22 @@
 
 {% block body %}
 
-<div id="message" class="alert alert-{{ output1 }} alert-dismissible fade {{ output }}" role="alert">
-{% for message in messages %}
-{{message}}
-{% endfor %}
+
+{% if messages %}
+    {% for message in messages %}
+    {% if message.tags != 'error' %}
+<div id="message" class="alert alert-success alert-dismissible fade show" role="alert">
+    {% else %}
+<div id="message" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {% endif %}
+        {{ message }}
+  
+    {% endfor %}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+{% endif %}
 </div>
-
-
   {% for product,range,nslide in allprod %}
     
     <div class="container">
@@ -95,10 +101,14 @@
       <a style="width:2%;" class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
         <span class="carousel-control-next-icon"></span>
       </a>
+
       
     </div>
   </div>
+
 {% endfor %}
+
+
 {% endblock %}
 {% block js %}
 <script>
