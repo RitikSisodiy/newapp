@@ -130,7 +130,14 @@ def signup(request):
 					pass1=request.POST['pasword1']
 					fname=request.POST['fname']
 					lname=request.POST['lname']
-					return HttpResponse("{}")
+					myuser = User.objects.create_user(username,email,pass1)
+					myuser.phone= phone
+					myuser.first_name= fname
+					myuser.last_name= lname
+					myuser.save()
+					messages.success(request,"your shoppercart account is successfully created")
+					return redirect('ShopHome')
+
 				else:
 					temp={'text':'phone number exist'}
 					responce=json.dumps(temp)
