@@ -1,4 +1,4 @@
-Django==2.1.7
+Django==2.2.10
 django-mysql==3.3.0
 gunicorn==20.0.4
 mysql-connector==2.2.9
